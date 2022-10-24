@@ -2,22 +2,16 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  let post = '서브웨이 조합 추천';
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='black-nav'>
+        <h4>Blog</h4>
+      </div>
+      {/* 블로그 글 제목 */}
+      <h4>{ post }</h4>
     </div>
   );
 }
