@@ -1,5 +1,4 @@
 /* eslint-disable */
-/* -> Lint 끄는 기능 */
 
 import logo from './logo.svg';
 import './App.css';
@@ -10,23 +9,6 @@ function App() {
   let [title, titleChange] = useState(['파스타가 맛있는 가게', '노브랜드 신상 버거: 맥앤치즈버거', '뫄뫄 타코야끼 후기']);
   let [like, likeCount] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
-
-  /*
-    map
-
-    1. array 자료 개수만큼 함수 안의 코드 실행
-    [1, 2, 3].map(function(){
-      console.log(aaa);
-    })
-    2. 함수의 파라미터는 array 안에 있던 자료
-    [1, 2, 3].map(function(e){
-      console.log(e);
-    })
-    3. return에 적은 값을 array에 담아줌
-    [1, 2, 3].map(function(){
-      return 'aaa'
-    })
-  */
 
   return (
     <div className='App'>
@@ -74,18 +56,29 @@ function App() {
       }
       
       {
-        modal == true ? <Modal/> : null
+        modal == true ? <Modal title={title} titleChange={titleChange} color={'skyblue'}/> : null /* color='skyblue'도 가능 */
       }
     </div>
   );
 }
-
-function Modal(){ // Modal - 컴포넌트
+/*
+  부모 -> 자식state 전송하는 방법
+  1. <자식컴포넌트 컴포넌트명={state이름}>
+  2. props 파라미터 등록 후 props.컴포넌트명 사용
+  * props 전송은 부모 -> 자식만 가능(거꾸로 x)
+  ** 컴포넌트1 -> 컴포넌트2도 x
+*/
+function Modal(props){
   return(
-    <div className='modal'>
-      <h4>제목</h4>
+    <div className='modal' style={ {background:props.color}}> {/* 응용. 여러색깔 모달창은? */}
+      <h4>{props.title[0]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <button onClick={ () => { 
+        let copy = [...props.title];
+        copy[0] = '디저트가 맛있는 카페';
+        props.titleChange(copy);
+        }}>글 수정</button>
     </div>
   )
 }
