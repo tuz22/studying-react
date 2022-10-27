@@ -2,7 +2,7 @@
 
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
 
@@ -72,6 +72,7 @@ function App() {
       {
         modal == true ? <Modal title={title} detailTitle={detailTitle}/> : null
       }
+      <Modal2></Modal2>
     </div>
   );
 }
@@ -90,6 +91,27 @@ function Modal(props){
         }}>글 수정</button> */}
     </div>
   )
+}
+
+/* class 문법으로 컴포넌트 만드는 방법(옛날 React 문법) */
+class Modal2 extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      name : 'Kim',
+      age : 20
+    }
+    console.log(this)
+  }
+  render(){
+    return(
+      <div>안녕 {this.state.age}
+        <button onClick={ () => {
+          this.setState({age : 21})
+        }}>수정</button>
+      </div>
+    )
+  }
 }
 
 
