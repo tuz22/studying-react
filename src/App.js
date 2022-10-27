@@ -6,10 +6,11 @@ import { useState } from 'react';
 
 function App() {
 
-  let [title] = useState(['파스타가 맛있는 가게', '노브랜드 신상 버거: 맥앤치즈버거', '뫄뫄 타코야끼 후기']);
+  let [title, setTitle] = useState(['파스타가 맛있는 가게', '노브랜드 신상 버거: 맥앤치즈버거', '뫄뫄 타코야끼 후기']);
   let [like, likeCount] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
-  let [detailTitle, setTitle] = useState(0);
+  let [detailTitle, setDetailTitle] = useState(0);
+  let [inputVal, setInputVal] = useState('');
 
   return (
     <div className='App'>
@@ -35,8 +36,9 @@ function App() {
         title.map(function(data, i){
           return (
             <div className='list' key={i}>
-              <h4 onClick={ () => { modal == false ? setModal(true)||setTitle(i) : setModal(false) }}>{ title[i] }
-                <span onClick={ () => {
+              <h4 onClick={ () => { modal == false ? setModal(true)||setDetailTitle(i) : setModal(false) }}>{ title[i] }
+                <span onClick={ (e) => {
+                  e.stopPropagation(); // 상위 HTML로 퍼지는 이벤트 버블링을 막을 때 사용
                   let copy = [...like];
                   copy[i] = copy[i] + 1;
                   likeCount(copy) }}>
@@ -44,28 +46,37 @@ function App() {
                 </span> {like[i]}
               </h4> {/* data = title[i] */}
               <h4>2022-10-24</h4>
+              <button onClick={ () => {
+                let copy = [...title];
+                copy.splice(i, 1); // 배열에서 해당 자료 삭제
+                setTitle(copy);
+              }}>삭제</button>
             </div>
           )
         })
       }
       
+      {/* <input>에 입력한 값 가져오는 방법  */}
+      <input onChange={ (e) => { 
+        setInputVal(e.target.value); // state변경함수는 늦게 처리됨 = 비동기처리
+        // console.log(inputVal);
+      
+      }}/>
+
+      <button onClick={ () => { 
+        let copy = [...title];
+        copy.unshift(inputVal); // 배열 맨 앞에 자료 추가
+        setTitle(copy);
+      }}>글 등록</button>
+
       {
         modal == true ? <Modal title={title} detailTitle={detailTitle}/> : null
       }
     </div>
   );
 }
-/*
-  부모 -> 자식state 전송하는 방법
-  1. <자식컴포넌트 컴포넌트명={state이름}>
-  2. props 파라미터 등록 후 props.컴포넌트명 사용
-  * props 전송은 부모 -> 자식만 가능(거꾸로 x)
-  ** 컴포넌트1 -> 컴포넌트2도 x
-*/
+
 function Modal(props){
-  // let [detailTitle, setTitle] = useState(0);
-  /* state를 App말고 여기에 만들면 부모 -> 자식state 전송 필요x */
-  // 근데 state가 Modal, App에서 둘다 필요하면 가장 상위 컴포넌트(App)에 만들어야함
 
   return(
     <div className='modal'>
@@ -80,5 +91,6 @@ function Modal(props){
     </div>
   )
 }
+
 
 export default App;
